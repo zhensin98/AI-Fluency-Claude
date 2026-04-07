@@ -1408,21 +1408,26 @@ function renderPage(pageId) {
 renderPage('overview');
 
 // ── Dynamic profile loading ───────────────────────────────────────────────────
-// If a company profile has been researched and saved, load it from the local
-// server and replace the default NTUC DATA. Falls back silently if server is
-// not running or no profile exists for the active company.
+// Loads the company profile JSON directly from the profiles/ folder.
 (function () {
   var active = null;
   try { active = JSON.parse(sessionStorage.getItem('active_company') || 'null'); } catch(e) {}
   if (!active || !active.id) return;
 
-  fetch('http://localhost:3001/profile?id=' + encodeURIComponent(active.id) + '&name=' + encodeURIComponent(active.name || ''))
+  // Map company IDs to their profile JSON filenames
+  var FILE_MAP = {
+    'ntuc-1775199849691':            'NTUC-1775199849691.json',
+    'liberty-mutual-1775385747417':  'liberty-mutual-1775385747417.json',
+    'chanel-1775471274673':          'chanel-1775468138820.json'
+  };
+  var filename = FILE_MAP[active.id] || (active.id + '.json');
+
+  fetch('profiles/' + filename)
     .then(function(r) { return r.json(); })
     .then(function(result) {
-      if (!result.found || !result.data) return;
-
-      // Merge loaded data into DATA (const — property assignment is fine)
+      // Profile JSON has a 'data' field containing the research data
       var loaded = result.data;
+      if (!loaded) return;
       Object.keys(loaded).forEach(function(k) { DATA[k] = loaded[k]; });
 
       // Update nav badges
