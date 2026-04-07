@@ -95,6 +95,42 @@
     </div>
   </div>
   <script>
+    // ── Pre-seed demo companies (Vercel branch only) ──────────────────────────
+    (function() {
+      var SEED_VERSION = 'demo_v1';
+      if (localStorage.getItem('ai_fluency_seed') === SEED_VERSION) return;
+      var DEMO = [
+        {
+          id: 'ntuc-1775199849691',
+          name: 'Yara',
+          password: 'Yara2026',
+          website: 'yara.com',
+          colors: { primary: '#01215c', primaryDark: '#011a4a', primaryLight: '#99a6be', accent: '#5c410e', sidebarBg: '#0e1634' },
+          logoDataUrl: 'LOGO/Yara.png'
+        },
+        {
+          id: 'liberty-mutual-1775385747417',
+          name: 'Liberty Mutual',
+          password: 'liberty2026',
+          website: 'libertymutual.com',
+          colors: { primary: '#fecf00', primaryDark: '#cba600', primaryLight: '#ffec99', accent: '#cac8d0', sidebarBg: '#c7980a' },
+          logoDataUrl: ''
+        },
+        {
+          id: 'chanel-1775471274673',
+          name: 'Chanel',
+          password: 'Chanel2026',
+          website: 'chanel.com',
+          colors: { primary: '#000000', primaryDark: '#000000', primaryLight: '#999999', accent: '#f4f0f0', sidebarBg: '#424251' },
+          logoDataUrl: 'LOGO/Chanel.png'
+        }
+      ];
+      try {
+        localStorage.setItem('training_companies', JSON.stringify(DEMO));
+        localStorage.setItem('ai_fluency_seed', SEED_VERSION);
+      } catch(e) {}
+    })();
+
     // If exactly one company is configured, show its logo and name on the landing page
     (function() {
       try {
